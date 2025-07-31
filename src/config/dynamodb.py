@@ -1,0 +1,6 @@
+REGION_NAME = "us-east-1"
+DB_TABLE_NAME = "launches"
+DB_HOST = "localhost"
+DB_PORT = "8000"
+ACCESS_KEY = "dummy"
+SECRET_KEY = "dummy"
