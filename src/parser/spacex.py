@@ -7,7 +7,7 @@ class SpacexLaunchParser:
 
     @staticmethod
     def parse_all(data: list[dict]) -> list[Launch]:
-        launches = []
+        launches: list[Launch] = []
 
         try:
             for launch_data in data:
@@ -26,7 +26,7 @@ class SpacexLaunchParser:
                 
                 launches.append(launch)
 
-        except:
-            print("Error parsing spacex launch data.")
+        except Exception as e:
+            print(f"Error parsing spacex launch data {e}")
 
         return launches

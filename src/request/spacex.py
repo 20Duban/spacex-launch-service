@@ -3,7 +3,7 @@ from http import HTTPStatus
 from config.spacex_api import URL_BASE
 
 
-class Spacexrequest:
+class SpacexRequest:
 
     def __init__(self, base: str = URL_BASE):
         self.__base = base

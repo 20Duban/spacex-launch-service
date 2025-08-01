@@ -1,6 +1,6 @@
 from repositories.repository import IRepository
 from parser.spacex import SpacexLaunchParser
-from request.spacex import Spacexrequest
+from request.spacex import SpacexRequest
 from domain.launch import Launch
 
 
@@ -10,7 +10,7 @@ class LaunchService:
         self,
         repository: IRepository
     ):
-        self.__spacex_request = Spacexrequest()
+        self.__spacex_request = SpacexRequest()
         self.__repository = repository
 
     def get_launches(self):
@@ -20,7 +20,7 @@ class LaunchService:
         return launches
 
     def save_launches(self, launches: list[Launch]):
-
+        
         inserted = 0
         updated = 0
 
