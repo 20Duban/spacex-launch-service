@@ -34,3 +34,6 @@ Resources:
           Type: Schedule
           Properties:
             Schedule: rate(6 hours)
+
+      Policies:
+        - AmazonDynamoDBFullAccess

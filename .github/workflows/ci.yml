@@ -1,0 +1,77 @@
+name: SpaceX Lambda CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    env:
+      REGION_NAME: ${{ secrets.AWS_REGION }}
+      ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      SECRET_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      DB_TABLE_NAME: launches
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run unit tests
+      run: pytest tests/
+
+    - name: Build Docker image
+      run: docker build -t spacex .
+
+    - name: Test Lambda container (optional)
+      run: |
+        docker run --rm \
+          -e REGION_NAME=$REGION_NAME \
+          -e ACCESS_KEY=$ACCESS_KEY \
+          -e SECRET_KEY=$SECRET_KEY \
+          -e DB_TABLE_NAME=$DB_TABLE_NAME \
+          -p 9000:8080 \
+          spacex &
+        sleep 10
+        curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{}'
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Install AWS SAM CLI
+      run: |
+        pip install aws-sam-cli
+
+    - name: Deploy with AWS SAM
+      run: |
+        sam build
+        sam deploy \
+          --no-confirm-changeset \
+          --no-fail-on-empty-changeset \
+          --stack-name spacex-stack \
+          --capabilities CAPABILITY_IAM

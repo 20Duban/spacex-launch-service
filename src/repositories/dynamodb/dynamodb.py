@@ -16,16 +16,24 @@ class DynamoDB (IRepository):
 
     def __init__(self):
         self.__table_name = os.getenv("DB_TABLE_NAME", DB_TABLE_NAME)
-        host = os.getenv("DB_HOST", DB_HOST)
-        port = os.getenv("DB_PORT", DB_PORT)
+        region_name = os.getenv("REGION_NAME", REGION_NAME)
         access = os.getenv("ACCESS_KEY", ACCESS_KEY)
         secret = os.getenv("SECRET_KEY", SECRET_KEY)
-        region_name = os.getenv("REGION_NAME", REGION_NAME)
+        port = os.getenv("DB_PORT", None)
+        host = os.getenv("DB_HOST", None)
+
+        if host and port:
+            endpoint_url = f"http://{host}:{port}"
+
+        else:
+            secret = None
+            access = None
+            endpoint_url = None
 
         self.__dynamodb = boto3.resource(
             "dynamodb",
             region_name=region_name,
-            endpoint_url=f"http://{host}:{port}",
+            endpoint_url=endpoint_url,
             aws_access_key_id=access,
             aws_secret_access_key=secret
         )
