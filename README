@@ -1,0 +1,46 @@
+# 🚀 SpaceX Launch Service (AWS Lambda + GitHub Actions)
+
+Este proyecto implementa un servicio sin servidor (serverless) en AWS Lambda que expone una API REST para consultar lanzamientos de SpaceX. Se despliega automáticamente con GitHub Actions y AWS SAM.
+
+---
+
+## 🧰 Tecnologías utilizadas
+
+- Python 3.12
+- AWS Lambda
+- Amazon API Gateway
+- Amazon DynamoDB
+- AWS SAM (Serverless Application Model)
+- GitHub Actions
+- Docker (para pruebas locales)
+
+---
+
+## 📁 Estructura del proyecto
+
+├── .github/workflows/ci-cd.yml # Pipeline de despliegue automático
+├── src/ # Código fuente (handler.py)
+├── template.yaml # Definición de recursos AWS (SAM)
+├── requirements.txt # Dependencias de Python
+└── tests/ # Pruebas unitarias
+
+
+## 🚀 Despliegue en AWS real (automático con GitHub Actions)
+
+### 1. 🔑 Configurar los Secrets en GitHub
+Ve a tu repositorio → **Settings** → **Secrets and variables** → **Actions** → y agrega:
+
+| Nombre del Secret         | Descripción                            |
+|---------------------------|----------------------------------------|
+| `AWS_ACCESS_KEY_ID`       | Access Key de un usuario IAM           |
+| `AWS_SECRET_ACCESS_KEY`   | Secret Key del usuario IAM             |
+| `AWS_REGION`              | Región donde desplegar (ej: `us-east-1`) |
+
+Asegúrate de que el usuario IAM tenga permisos para usar:
+
+- AdministratorAccess
+- AmazonDynamoDBFullAccess
+- AmazonS3FullAccess
+- AWSCloudFormationFullAccess
+- AWSLambda_FullAccess
+- CloudWatchLogsFullAccess

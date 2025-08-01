@@ -32,9 +32,6 @@ jobs:
     - name: Run unit tests
       run: pytest tests/
 
-    - name: Build Docker image
-      run: docker build -t spacex .
-
   deploy:
     needs: build-and-test
     runs-on: ubuntu-latest
