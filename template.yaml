@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SpaceX Launch Lambda
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Timeout: 30
+    MemorySize: 128
+
+Resources:
+  LaunchFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handler.lambda_handler
+      CodeUri: src/
+      Environment:
+        Variables:
+          REGION_NAME: us-east-1
+          ACCESS_KEY: dummy
+          SECRET_KEY: dummy
+          DB_TABLE_NAME: launches
+          DB_HOST: dynamodb-local
+          DB_PORT: 8000
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /launches
+            Method: get

@@ -27,6 +27,3 @@ def lambda_handler(event, context):
     return response
 
 
-if __name__ == "__main__":
-    result = lambda_handler({}, {})
-    print(result)

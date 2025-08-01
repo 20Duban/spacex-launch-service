@@ -18,7 +18,7 @@ class SpacexRequest:
             if (response.status_code == HTTPStatus.OK):
                 data = response.json()
 
-        except:
-            print("Error obtaining launches")
+        except Exception as e:
+            print(f"Error obtaining launches {e}")
         
         return data
