@@ -17,11 +17,7 @@ Resources:
       Environment:
         Variables:
           REGION_NAME: us-east-1
-          ACCESS_KEY: dummy
-          SECRET_KEY: dummy
           DB_TABLE_NAME: launches
-          DB_HOST: dynamodb-local
-          DB_PORT: 8000
       
       Events:
         ApiEvent:
