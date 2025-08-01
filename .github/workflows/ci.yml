@@ -50,10 +50,29 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_REGION }}
-
+    
     - name: Install AWS SAM CLI
       run: |
         pip install aws-sam-cli
+
+    - name: Ensure S3 bucket exists
+      run: |
+        BUCKET_NAME=spacex-deploy-artifacts
+        REGION=${{ secrets.AWS_REGION }}
+
+        if ! aws s3api head-bucket --bucket "$BUCKET_NAME" 2>/dev/null; then
+          echo "Bucket '$BUCKET_NAME' no existe. Creando..."
+          if [ "$REGION" = "us-east-1" ]; then
+            aws s3api create-bucket --bucket "$BUCKET_NAME"
+          else
+            aws s3api create-bucket \
+              --bucket "$BUCKET_NAME" \
+              --region "$REGION" \
+              --create-bucket-configuration LocationConstraint="$REGION"
+          fi
+        else
+          echo "Bucket '$BUCKET_NAME' ya existe."
+        fi
 
     - name: Deploy with AWS SAM
       run: |
@@ -62,4 +81,5 @@ jobs:
           --no-confirm-changeset \
           --no-fail-on-empty-changeset \
           --stack-name spacex-stack \
-          --capabilities CAPABILITY_IAM
+          --capabilities CAPABILITY_IAM \
+          --s3-bucket spacex-deploy-artifacts
