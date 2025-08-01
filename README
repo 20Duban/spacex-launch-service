@@ -10,6 +10,9 @@ Este proyecto implementa un servicio sin servidor (serverless) en AWS Lambda que
 - AWS Lambda
 - Amazon API Gateway
 - Amazon DynamoDB
+- Amazon EventBridge
+- Amazon S3
+- AWS Identity and Access Management (IAM)
 - AWS SAM (Serverless Application Model)
 - GitHub Actions
 - Docker (para pruebas locales)
@@ -44,3 +47,77 @@ Asegúrate de que el usuario IAM tenga permisos para usar:
 - AWSCloudFormationFullAccess
 - AWSLambda_FullAccess
 - CloudWatchLogsFullAccess
+
+### 2. 📝 ¿Qué hace el pipeline?
+
+Cada vez que haces **push a `master`**:
+
+1. Corre tests unitarios.
+2. Construye una imagen Docker para validar tu Lambda.
+3. Asegura que el bucket S3 exista.
+4. Usa `sam build` y `sam deploy` para desplegar la función Lambda en tu cuenta AWS real.
+
+---
+
+### 3. 📡 ¿Qué recurso se crea?
+
+- Una función Lambda que responde a `GET /launches` en una API REST.
+- Un cron (Schedule) que actualiza la información cada 6 horas.
+- Una tabla DynamoDB llamada `launches`.
+
+---
+
+## 🔍 Pruebas manuales
+
+Una vez desplegado, puedes consultar la API desde:   
+- GET https://<tu-url-api>.amazonaws.com/Prod/launches
+
+## 🧪 Pruebas locales con Docker (opcional)
+
+Puedes ejecutar tu función Lambda en local así:
+
+## 📦 Requisitos
+
+- [Docker](https://www.docker.com/products/docker-desktop) instalado y corriendo.
+- [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html) instalado.
+- Python 3.12 y `pip`.
+
+---
+
+## 🌐 1. Crear red de Docker (solo la primera vez)
+
+Esto permite que SAM pueda comunicarse con DynamoDB Local.
+
+```bash
+docker network create my-network
+
+## 🐳 1. Instalar y correr DynamoDB Local
+
+Ejecuta el siguiente comando para iniciar DynamoDB Local:
+
+```bash
+docker run -d -p 8000:8000 --network my-network --name dynamodb-local amazon/dynamodb-local 
+
+
+# En la raiz del proyecto para construir la imagen docker lambda ejecutar.
+
+```bash
+docker build -t spacex-lambda .
+
+# ejecutar el contenedor
+
+```bash
+docker run -p 9000:8080 \
+  --network my-network \
+  -e REGION_NAME=us-east-1 \
+  -e ACCESS_KEY=dummy \
+  -e SECRET_KEY=dummy \
+  -e DB_TABLE_NAME=launches \
+  -e DB_HOST=dynamodb-local \
+  -e DB_PORT=8000 \
+  spacex-lambda
+
+# api test
+```bash
+curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" \
+  -d '{}'
