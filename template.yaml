@@ -22,9 +22,15 @@ Resources:
           DB_TABLE_NAME: launches
           DB_HOST: dynamodb-local
           DB_PORT: 8000
+      
       Events:
         ApiEvent:
           Type: Api
           Properties:
             Path: /launches
             Method: get
+
+        ScheduledUpdate:
+          Type: Schedule
+          Properties:
+            Schedule: rate(6 hours)
