@@ -36,6 +36,7 @@ class LaunchService:
                 updated += 1
 
             data.append({
+                "id": launch.id,
                 "launchName": launch.mission_name,
                 "flightNumber": launch.flight_number,
                 "description": launch.details,
