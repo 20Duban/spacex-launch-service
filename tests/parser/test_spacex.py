@@ -19,6 +19,8 @@ def test_spacex_parser_launch(mock_get: MagicMock):
         "success": True,
         "upcoming": True,
         "details": "details",
+        "webcast_url": "1",
+        "launch.image_url": "2"
     }]
 
     spacex_request = SpacexRequest()
@@ -36,3 +38,6 @@ def test_spacex_parser_launch(mock_get: MagicMock):
     assert launch.upcoming is True
     assert launch.flight_number == 1
     assert launch.details == "details"
+    assert launch.webcast_url == "1"
+    assert launch.image_url == "2"
+    
