@@ -21,7 +21,9 @@ class SpacexLaunchParser:
                     flight_number = launch_data["flight_number"],
                     launch_date = utc,
                     success = launch_data["success"],
-                    upcoming = launch_data["upcoming"]
+                    upcoming = launch_data["upcoming"],
+                    image_url = launch_data["links"]["patch"]["small"],
+                    webcast_url = launch_data["links"]["webcast"]
                 )
                 
                 launches.append(launch)

@@ -11,3 +11,5 @@ class Launch:
     success: bool
     upcoming: bool
     details: str
+    image_url: str
+    webcast_url: str
