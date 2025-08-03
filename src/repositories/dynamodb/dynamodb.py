@@ -7,8 +7,6 @@ from config.dynamodb import (
     REGION_NAME, 
     ACCESS_KEY,
     SECRET_KEY,
-    DB_PORT,
-    DB_HOST,
     DB_TABLE_NAME
 )
 

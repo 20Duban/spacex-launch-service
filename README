@@ -80,7 +80,6 @@ Puedes ejecutar tu función Lambda en local así:
 ## 📦 Requisitos
 
 - [Docker](https://www.docker.com/products/docker-desktop) instalado y corriendo.
-- [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html) instalado.
 - Python 3.12 y `pip`.
 
 ---
@@ -91,6 +90,7 @@ Esto permite la comunicacion con DynamoDB Local.
 
 ```bash
 docker network create my-network
+```
 
 ## 🐳 1. Instalar y correr DynamoDB Local
 
@@ -98,12 +98,14 @@ Ejecuta el siguiente comando para iniciar DynamoDB Local:
 
 ```bash
 docker run -d -p 8000:8000 --network my-network --name dynamodb-local amazon/dynamodb-local 
+```
 
 
 ## En la raiz del proyecto para construir la imagen docker lambda ejecutar.
 
 ```bash
 docker build -t spacex-lambda .
+```
 
 ## Ejecutar el contenedor
 
@@ -117,8 +119,18 @@ docker run -p 9000:8080 \
   -e DB_HOST=dynamodb-local \
   -e DB_PORT=8000 \
   spacex-lambda
+```
 
 ## api test
 ```bash
 curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" \
   -d '{}'
+```
+
+✍️ Autor
+  Duban Velazco
+  Software Engineer
+  GitHub https://github.com/20Duban
+  LinkedIn https://www.linkedin.com/in/duban-velazco-30b18420a/
+  Correo: micuentaduban@gmail.com
+  
