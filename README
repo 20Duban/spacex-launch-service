@@ -31,7 +31,7 @@ Este proyecto implementa un servicio sin servidor (serverless) en AWS Lambda que
 ## 🚀 Despliegue en AWS real (automático con GitHub Actions)
 
 ### 1. 🔑 Configurar los Secrets en GitHub
-Ve a tu repositorio → **Settings** → **Secrets and variables** → **Actions** → y agrega:
+Ve al repositorio → **Settings** → **Secrets and variables** → **Actions** → y agrega:
 
 | Nombre del Secret         | Descripción                            |
 |---------------------------|----------------------------------------|
@@ -39,7 +39,7 @@ Ve a tu repositorio → **Settings** → **Secrets and variables** → **Actions
 | `AWS_SECRET_ACCESS_KEY`   | Secret Key del usuario IAM             |
 | `AWS_REGION`              | Región donde desplegar (ej: `us-east-1`) |
 
-Asegúrate de que el usuario IAM tenga permisos para usar:
+Asegúrate de que el usuario IAM de AWS tenga permisos para usar:
 
 - AdministratorAccess
 - AmazonDynamoDBFullAccess
@@ -52,10 +52,10 @@ Asegúrate de que el usuario IAM tenga permisos para usar:
 
 Cada vez que haces **push a `master`**:
 
-1. Corre tests unitarios.
-2. Construye una imagen Docker para validar tu Lambda.
+1. Construye el proyecto e instala las dependencias
+2. Corre tests unitarios.
 3. Asegura que el bucket S3 exista.
-4. Usa `sam build` y `sam deploy` para desplegar la función Lambda en tu cuenta AWS real.
+4. Usa `sam build` y `sam deploy` para desplegar la función Lambda en la cuenta AWS real.
 
 ---
 
@@ -64,6 +64,7 @@ Cada vez que haces **push a `master`**:
 - Una función Lambda que responde a `GET /launches` en una API REST.
 - Un cron (Schedule) que actualiza la información cada 6 horas.
 - Una tabla DynamoDB llamada `launches`.
+- Un Bucket en S3 llamado `spacex-deploy-artifacts`
 
 ---
 
@@ -86,7 +87,7 @@ Puedes ejecutar tu función Lambda en local así:
 
 ## 🌐 1. Crear red de Docker (solo la primera vez)
 
-Esto permite que SAM pueda comunicarse con DynamoDB Local.
+Esto permite la comunicacion con DynamoDB Local.
 
 ```bash
 docker network create my-network
@@ -99,12 +100,12 @@ Ejecuta el siguiente comando para iniciar DynamoDB Local:
 docker run -d -p 8000:8000 --network my-network --name dynamodb-local amazon/dynamodb-local 
 
 
-# En la raiz del proyecto para construir la imagen docker lambda ejecutar.
+## En la raiz del proyecto para construir la imagen docker lambda ejecutar.
 
 ```bash
 docker build -t spacex-lambda .
 
-# ejecutar el contenedor
+## Ejecutar el contenedor
 
 ```bash
 docker run -p 9000:8080 \
@@ -117,7 +118,7 @@ docker run -p 9000:8080 \
   -e DB_PORT=8000 \
   spacex-lambda
 
-# api test
+## api test
 ```bash
 curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" \
   -d '{}'

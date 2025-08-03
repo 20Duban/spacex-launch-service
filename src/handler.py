@@ -13,7 +13,8 @@ def lambda_handler(event, context):
     summary = launch_service.save_launches(launches)
 
     body = {
-        "summary": summary
+        "summary": summary,
+        "launches": launches
     }
 
     response = {
