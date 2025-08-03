@@ -20,7 +20,7 @@ def test_spacex_parser_launch(mock_get: MagicMock):
         "upcoming": True,
         "details": "details",
         "links": {
-            "paths": {"small": "2"},
+            "patch": {"small": "2"},
             "webcast": "1"
         }
         
