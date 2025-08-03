@@ -20,7 +20,9 @@ def test_get_launch_service(
             launch_date=datetime.fromisoformat("2006-03-24T22:30:00+00:00"),
             mission_name="name",
             success=True,
-            upcoming=True
+            upcoming=True,
+            webcast_url = "1",
+            image_url = "2"
         )
     ]
 
@@ -45,3 +47,5 @@ def test_get_launch_service(
     assert launch.mission_name == "name"
     assert launch.success == True
     assert launch.upcoming == True
+    assert launch.webcast_url == "1"
+    assert launch.image_url == "2"
