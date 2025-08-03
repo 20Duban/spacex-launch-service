@@ -19,8 +19,11 @@ def test_spacex_parser_launch(mock_get: MagicMock):
         "success": True,
         "upcoming": True,
         "details": "details",
-        "webcast_url": "1",
-        "launch.image_url": "2"
+        "links": {
+            "paths": {"small": "2"},
+            "webcast": "1"
+        }
+        
     }]
 
     spacex_request = SpacexRequest()
